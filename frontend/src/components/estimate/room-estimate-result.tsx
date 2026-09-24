@@ -1,7 +1,7 @@
 import { Info } from "lucide-react";
 
 import type { components } from "@/lib/api/schema";
-import { formatPkr } from "@/lib/labels";
+import { formatPkr, ROOM_TYPE_LABELS } from "@/lib/labels";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -23,7 +23,7 @@ export function RoomEstimateResult({
   request: RoomEstimateRequest;
 }) {
   const roomSummary = request.rooms
-    .map((r) => `${r.count}× ${r.label} (${r.length_ft}×${r.width_ft}ft)`)
+    .map((r) => `${r.count}× ${ROOM_TYPE_LABELS[r.room_type]} (${r.length_ft}×${r.width_ft}ft)`)
     .join(", ");
   const defaultLabel = `Rooms · ${result.total_floor_area_sqft} sqft`;
 
@@ -64,6 +64,35 @@ export function RoomEstimateResult({
               <p className="text-xl font-semibold tabular-nums tracking-tight text-foreground">
                 {result.total_wall_area_sqft.toLocaleString()}{" "}
                 <span className="text-sm font-medium text-muted-foreground">sqft</span>
+              </p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div>
+              <p className="text-xs text-muted-foreground">Wet area</p>
+              <p className="text-base font-semibold tabular-nums text-foreground">
+                {result.wet_floor_area_sqft.toLocaleString()}{" "}
+                <span className="text-xs font-medium text-muted-foreground">sqft</span>
+              </p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Dry area</p>
+              <p className="text-base font-semibold tabular-nums text-foreground">
+                {result.dry_floor_area_sqft.toLocaleString()}{" "}
+                <span className="text-xs font-medium text-muted-foreground">sqft</span>
+              </p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Doors</p>
+              <p className="text-base font-semibold tabular-nums text-foreground">
+                {result.total_doors}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs text-muted-foreground">Windows</p>
+              <p className="text-base font-semibold tabular-nums text-foreground">
+                {result.total_windows}
               </p>
             </div>
           </div>

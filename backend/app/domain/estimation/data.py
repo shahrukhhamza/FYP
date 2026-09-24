@@ -258,3 +258,43 @@ RENOVATION_LABOUR_PER_SQFT: dict[RenovationWorkItem, dict[QualityGrade, float]] 
         QualityGrade.PREMIUM: 110,
     },
 }
+
+# --- Room-by-room estimator: wet-vs-dry and door/window counting --------
+# INDUSTRY-KNOWLEDGE PLACEHOLDER — these multipliers/costs reflect general,
+# widely-understood construction-industry knowledge (wet areas cost more;
+# doors/windows are priced per opening), not a specific researched source
+# the way the material rates in this file are. Still unverified numbers,
+# same as everything else marked placeholder — the judgment that these
+# *categories* of cost exist and matter is the real claim being made here,
+# not the precision of these particular figures.
+
+# Applied to the flat electrical/plumbing and tiles/finishing benchmarks
+# for wet-area floor space (kitchens, bathrooms) on top of the normal
+# per-sqft rate — full tiling and a much higher fixture count per sqft.
+WET_AREA_ELECTRICAL_PLUMBING_MULTIPLIER = 2.5
+WET_AREA_FINISHING_MULTIPLIER = 1.8
+
+# Standard opening sizes (sqft), subtracted from gross wall area per
+# door/window instead of a flat percentage deduction — an estimator counts
+# actual openings, not a guessed wall-opening ratio.
+DOOR_AREA_SQFT = 21.0  # ~3ft x 7ft standard door
+WINDOW_AREA_SQFT = 15.0  # ~3ft x 5ft standard window
+
+# Installed cost per opening (frame + shutter/sash + glass + hardware),
+# replacing the flat woodwork_doors per-sqft benchmark for the room
+# estimator with something tied to what's actually being built.
+DOOR_COST_PKR: dict[QualityGrade, float] = {
+    QualityGrade.ECONOMY: 12000,
+    QualityGrade.STANDARD: 18000,
+    QualityGrade.PREMIUM: 35000,
+}
+WINDOW_COST_PKR: dict[QualityGrade, float] = {
+    QualityGrade.ECONOMY: 8000,
+    QualityGrade.STANDARD: 14000,
+    QualityGrade.PREMIUM: 28000,
+}
+
+# However many openings are cut into a wall, don't let net wall area
+# (bricks/sand/paint quantity basis) collapse to near-zero — a floor at
+# 30% of gross wall area.
+MIN_NET_WALL_AREA_FRACTION = 0.30

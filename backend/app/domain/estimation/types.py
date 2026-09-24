@@ -67,3 +67,32 @@ WORK_ITEM_USES_WALL_AREA: dict[RenovationWorkItem, bool] = {
     RenovationWorkItem.PAINTING: True,
     RenovationWorkItem.PLASTERING: True,
 }
+
+
+class RoomType(str, Enum):
+    BEDROOM = "bedroom"
+    KITCHEN = "kitchen"
+    BATHROOM = "bathroom"
+    LOUNGE = "lounge"
+    DINING = "dining"
+    STORE = "store"
+    GARAGE = "garage"
+    OTHER = "other"
+
+
+ROOM_TYPE_LABELS: dict[RoomType, str] = {
+    RoomType.BEDROOM: "Bedroom",
+    RoomType.KITCHEN: "Kitchen",
+    RoomType.BATHROOM: "Bathroom",
+    RoomType.LOUNGE: "Lounge / Living Room",
+    RoomType.DINING: "Dining Room",
+    RoomType.STORE: "Store Room",
+    RoomType.GARAGE: "Garage",
+    RoomType.OTHER: "Other",
+}
+
+# "Wet" areas (full wall tiling, waterproofing, much higher plumbing
+# fixture density) cost meaningfully more per sqft than "dry" areas
+# (paint only, a light switch or two) — a real estimator always separates
+# these. Everything not listed here is dry.
+WET_ROOM_TYPES: frozenset[RoomType] = frozenset({RoomType.KITCHEN, RoomType.BATHROOM})

@@ -24,6 +24,24 @@ export const QUALITY_GRADE_LABELS: Record<components["schemas"]["QualityGrade"],
   premium: "Premium",
 };
 
+export const ROOM_TYPE_LABELS: Record<components["schemas"]["RoomType"], string> = {
+  bedroom: "Bedroom",
+  kitchen: "Kitchen",
+  bathroom: "Bathroom",
+  lounge: "Lounge / Living Room",
+  dining: "Dining Room",
+  store: "Store Room",
+  garage: "Garage",
+  other: "Other",
+};
+
+// Rooms that get the wet-area cost treatment (full tiling, denser
+// plumbing) — mirrors backend WET_ROOM_TYPES, used to badge these rows.
+export const WET_ROOM_TYPES: ReadonlySet<components["schemas"]["RoomType"]> = new Set([
+  "kitchen",
+  "bathroom",
+]);
+
 export const WORK_ITEM_LABELS: Record<components["schemas"]["RenovationWorkItem"], string> = {
   floor_tiling: "Floor tiling",
   wall_tiling: "Wall tiling",

@@ -553,6 +553,14 @@ export interface components {
             total_floor_area_sqft: number;
             /** Total Wall Area Sqft */
             total_wall_area_sqft: number;
+            /** Wet Floor Area Sqft */
+            wet_floor_area_sqft: number;
+            /** Dry Floor Area Sqft */
+            dry_floor_area_sqft: number;
+            /** Total Doors */
+            total_doors: number;
+            /** Total Windows */
+            total_windows: number;
             /** Categories */
             categories: components["schemas"]["CategoryBreakdown"][];
             /** Total Cost Low Pkr */
@@ -567,19 +575,20 @@ export interface components {
             rates_sourced_date: string;
             /**
              * Disclaimer
-             * @default Preliminary estimate only, not a binding quotation. Material rates are sourced estimates (updated 2026-09-25). Floor and wall areas are computed directly from the room dimensions you entered (exact geometry, not a plot-size approximation), but the material-quantity-per-sqft ratios applied to them, the door/window wall-area deduction, and the RCC structural quantities are still standard rule-of-thumb figures, not a structural engineer's calculation.
+             * @default Preliminary estimate only, not a binding quotation. Material rates are sourced estimates (updated 2026-09-25). Floor and wall areas, door and window counts are computed directly from what you entered (exact geometry, not a plot-size approximation). Wet-area (kitchen/bathroom) cost multipliers, per-opening door/window costs, material-quantity-per-sqft ratios, and RCC structural quantities are still rule-of-thumb industry figures, not a structural engineer's calculation.
              */
             disclaimer: string;
         };
         /**
          * RoomGroup
-         * @description One or more identical rooms — "4 bedrooms, 6ft x 7ft each" is
-         *     count=4, length_ft=6, width_ft=7. Add multiple groups to describe a
-         *     whole house (bedrooms + kitchen + lounge + ...).
+         * @description One or more identical rooms — "4 bedrooms, 6ft x 7ft each, 1 door,
+         *     1 window" is room_type=bedroom, count=4, length_ft=6, width_ft=7,
+         *     doors=1, windows=1. Add multiple groups to describe a whole house.
          */
         RoomGroup: {
+            room_type: components["schemas"]["RoomType"];
             /** Label */
-            label: string;
+            label?: string | null;
             /**
              * Count
              * @default 1
@@ -589,7 +598,22 @@ export interface components {
             length_ft: number;
             /** Width Ft */
             width_ft: number;
+            /**
+             * Doors
+             * @default 1
+             */
+            doors: number;
+            /**
+             * Windows
+             * @default 1
+             */
+            windows: number;
         };
+        /**
+         * RoomType
+         * @enum {string}
+         */
+        RoomType: "bedroom" | "kitchen" | "bathroom" | "lounge" | "dining" | "store" | "garage" | "other";
         /** SavedEstimateCreate */
         SavedEstimateCreate: {
             estimate_type: components["schemas"]["EstimateType"];
