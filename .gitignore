@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.env
+.env.*
+
+# Node / web frontend
+node_modules/
+.next/
+dist/
+build/
+.env.local
+
+# Android / mobile
+*.iml
+.gradle/
+local.properties
+*.apk
+*.aab
+.cxx/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
