@@ -177,6 +177,15 @@ export interface components {
             unit: string;
             /** Rate Pkr */
             rate_pkr: number;
+            /**
+             * Trend Direction
+             * @enum {string}
+             */
+            trend_direction: "up" | "down" | "flat";
+            /** Trend Pct */
+            trend_pct: number;
+            /** History */
+            history: components["schemas"]["RateHistoryPoint"][];
         };
         /**
          * PlotSize
@@ -188,6 +197,16 @@ export interface components {
          * @enum {string}
          */
         QualityGrade: "economy" | "standard" | "premium";
+        /** RateHistoryPoint */
+        RateHistoryPoint: {
+            /**
+             * Date
+             * Format: date
+             */
+            date: string;
+            /** Rate Pkr */
+            rate_pkr: number;
+        };
         /** RatesResponse */
         RatesResponse: {
             city: components["schemas"]["City"];
@@ -195,7 +214,7 @@ export interface components {
             rates: components["schemas"]["MaterialRate"][];
             /**
              * Disclaimer
-             * @default Placeholder seed rates — not yet backed by the live Daily Material Rates admin data.
+             * @default Placeholder seed rates and fabricated trend history — not yet backed by the live Daily Material Rates admin data.
              */
             disclaimer: string;
         };

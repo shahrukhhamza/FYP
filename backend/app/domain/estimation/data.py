@@ -137,3 +137,12 @@ FLAT_BENCHMARK_PER_SQFT: dict[MaterialCategory, dict[QualityGrade, float]] = {
 
 # Estimate range band: +/- this fraction around the point estimate.
 ESTIMATE_RANGE_FRACTION = 0.08
+
+# PLACEHOLDER — there is no real rate history yet (no persistence, no admin
+# entry tool — that's the roadmap "Daily Material Rates" admin work). This
+# is a fabricated-but-deterministic daily walk ending at today's canonical
+# rate, so the /rates trend indicator has something real to compute against
+# instead of the frontend inventing fake numbers of its own. Replace with
+# real stored history once the admin entry tool exists.
+RATE_HISTORY_DAYS = 14
+RATE_HISTORY_MAX_DAILY_STEP = 0.012  # +/- 1.2% per day, deterministic per material/city

@@ -1,3 +1,7 @@
+import random
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+
 from app.domain.estimation import data
 from app.domain.estimation.types import (
     CATEGORY_LABELS,
@@ -13,7 +17,12 @@ from app.schemas.estimate import (
     EstimateResponse,
     MaterialLineItem,
 )
-from app.schemas.rates import MaterialRate, RatesResponse
+from app.schemas.rates import (
+    MaterialRate,
+    RateHistoryPoint,
+    RatesResponse,
+    TrendDirection,
+)
 
 
 def built_up_area_sqft(plot_size: PlotSize, storeys: Storeys) -> float:
@@ -80,14 +89,63 @@ def compute_estimate(request: EstimateRequest) -> EstimateResponse:
     )
 
 
-def get_rates(city: City) -> RatesResponse:
-    rates = [
-        MaterialRate(
-            material=material,
-            label=data.MATERIAL_LABEL[material],
-            unit=data.MATERIAL_UNIT[material],
-            rate_pkr=round(material_rate_for_city(material, city), 2),
+def _rate_history(material: str, city: City, today_rate: float) -> list[RateHistoryPoint]:
+    """
+    Deterministic fabricated daily history ending exactly at today_rate — see
+    the RATE_HISTORY_* comment in data.py for why this isn't real data yet.
+    Seeded per (material, city) so it's stable across requests, not re-randomized
+    on every call.
+    """
+    rng = random.Random(f"{material}:{city.value}")
+    days = data.RATE_HISTORY_DAYS
+    step = data.RATE_HISTORY_MAX_DAILY_STEP
+
+    # Build day-over-day multipliers walking forward from `days` ago to today,
+    # then rescale so the walk lands exactly on today_rate.
+    multipliers = [1.0]
+    for _ in range(days - 1):
+        multipliers.append(multipliers[-1] * (1 + rng.uniform(-step, step)))
+
+    implied_today = multipliers[-1]
+    scale = today_rate / implied_today
+
+    today = datetime.now(ZoneInfo("Asia/Karachi")).date()
+    return [
+        RateHistoryPoint(
+            date=today - timedelta(days=(days - 1 - i)),
+            rate_pkr=round(m * scale, 2),
         )
-        for material in data.MATERIAL_RATE_PKR
+        for i, m in enumerate(multipliers)
     ]
+
+
+def _trend(history: list[RateHistoryPoint]) -> tuple[TrendDirection, float]:
+    first, last = history[0].rate_pkr, history[-1].rate_pkr
+    change_pct = ((last - first) / first) * 100 if first else 0.0
+    if change_pct > 0.5:
+        direction: TrendDirection = "up"
+    elif change_pct < -0.5:
+        direction = "down"
+    else:
+        direction = "flat"
+    return direction, round(change_pct, 1) + 0.0  # normalizes -0.0 to 0.0
+
+
+def get_rates(city: City) -> RatesResponse:
+    rates = []
+    for material in data.MATERIAL_RATE_PKR:
+        today_rate = round(material_rate_for_city(material, city), 2)
+        history = _rate_history(material, city, today_rate)
+        direction, change_pct = _trend(history)
+        rates.append(
+            MaterialRate(
+                material=material,
+                label=data.MATERIAL_LABEL[material],
+                unit=data.MATERIAL_UNIT[material],
+                rate_pkr=today_rate,
+                trend_direction=direction,
+                trend_pct=change_pct,
+                history=history,
+            )
+        )
     return RatesResponse(city=city, rates=rates)
