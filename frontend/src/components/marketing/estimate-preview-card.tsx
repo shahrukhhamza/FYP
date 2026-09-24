@@ -7,11 +7,11 @@ import { Separator } from "@/components/ui/separator";
 // doesn't visually disagree with the real /estimate page. Kept static
 // (not live-fetched) so the landing page stays resilient if the API is down.
 const BREAKDOWN = [
-  { label: "Structure & steel", value: 52.9, color: "var(--chart-1)" },
-  { label: "Cement & masonry", value: 10.2, color: "var(--chart-2)" },
-  { label: "Electrical & plumbing", value: 10.5, color: "var(--chart-3)" },
-  { label: "Woodwork & doors", value: 9.2, color: "var(--chart-4)" },
-  { label: "Tiles, paint & finishing", value: 17.3, color: "var(--chart-6)" },
+  { label: "Structure & steel", value: 39.2, color: "var(--chart-1)" },
+  { label: "Cement & masonry", value: 7.4, color: "var(--chart-2)" },
+  { label: "Electrical & plumbing", value: 12.2, color: "var(--chart-3)" },
+  { label: "Woodwork & doors", value: 9.5, color: "var(--chart-4)" },
+  { label: "Tiles, paint & finishing", value: 31.8, color: "var(--chart-6)" },
 ];
 
 export function EstimatePreviewCard() {
@@ -32,7 +32,7 @@ export function EstimatePreviewCard() {
         <div>
           <p className="text-xs text-muted-foreground">Estimated total cost</p>
           <p className="text-3xl font-semibold tracking-tight text-foreground">
-            PKR 88.2L&ndash;103.6L
+            PKR 107.0L&ndash;125.6L
           </p>
         </div>
 

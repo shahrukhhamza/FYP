@@ -1,28 +1,44 @@
 """
-PLACEHOLDER DATA — every number in this file is a stand-in, not a verified
-figure. Nothing here has been checked against the Punjab Market Rate
-Schedule, actual CDA/DHA/Bahria Town bylaws, or a practising civil engineer
-(see TAMEER_Refined_Concept.pdf, section 5 and section 9 for why that
-verification matters and is required before this engine's output can be
-trusted).
+Two tiers of confidence in this file — read the comment above each block,
+not just this header, before trusting a number:
+
+  SOURCED (2026-09-25): MATERIAL_RATE_PKR and FLAT_BENCHMARK_PER_SQFT were
+  checked against current web-published Pakistani rate roundups and cost
+  guides (Business Recorder-style rate pages, civilconstructionguide.com,
+  multiple "construction cost per sqft Pakistan 2026" guides, tile/paint
+  dealer rate pages) and picked from the middle of what those sources
+  reported. This is NOT the same as a quantity surveyor's or civil
+  engineer's sign-off, and the sources themselves disagree with each other
+  by 2-3x on some figures (e.g. published "grey structure cost per sqft"
+  ranged from ~1,800 to ~7,500 depending on the source) — there is no
+  single agreed "correct" number in the Pakistani market for this, and
+  presenting one without a range would be false precision. Treat these as
+  a defensible, dated estimate, not ground truth.
+
+  STILL INVENTED: covered-area bylaw ratios, material quantity-per-sqft
+  ratios (bags of cement per sqft etc.), tile adhesive rate, and every
+  renovation labour benchmark have NOT been checked against any source —
+  see TAMEER_Refined_Concept.pdf sections 5 and 9 for why real bylaw data
+  and quantity-surveyor-verified ratios still matter and are the real
+  remaining gap.
 
 This file exists so that verification work is a DATA change, not a CODE
 change: replace the values below, leave engine.py untouched, and every
 endpoint that depends on it updates automatically.
 
-TODO before this stops being a placeholder:
+TODO before this is actually verified:
   - Get real covered-area ratios per plot size, per authority (CDA, RDA,
     DHA, Bahria Town each set their own bylaws; this file currently uses
     one ratio per plot size, not per authority).
   - Get real material quantity ratios per sqft from a quantity surveyor
-    or civil engineer, ideally cross-checked against a few real houses.
-  - Replace MATERIAL_RATES_BY_CITY with live data once the Daily Material
-    Rates module (rate DB + admin entry) exists; this dict is only a seed.
-  - Replace FLAT_BENCHMARK_PER_SQFT with real cost benchmarks — electrical,
-    plumbing, woodwork and tiles/finishing aren't in the tracked material
-    rate list (cement, steel, bricks, sand, aggregate, paint), so they're
-    modeled as a flat PKR/sqft figure by quality grade instead of a
-    quantity x rate calculation.
+    or civil engineer, ideally cross-checked against a few real houses —
+    the SOURCED rates above only fix the price side of quantity x price;
+    the quantity side is still a guess.
+  - Replace MATERIAL_RATE_PKR with live data once the Daily Material
+    Rates admin entry tool exists; this dict is only a manually-updated
+    seed and will go stale the day after it's written.
+  - Get tile adhesive, woodwork, and renovation labour rates from an
+    actual supplier/contractor — no source was found for these.
 """
 
 from app.domain.estimation.types import (
@@ -85,8 +101,13 @@ QUALITY_GRADE_QUANTITY_MULTIPLIER: dict[QualityGrade, float] = {
     QualityGrade.PREMIUM: 1.25,
 }
 
-# PLACEHOLDER — seed material rates (PKR). Stand-in for the real Daily
-# Material Rates module (rate DB + admin entry), not yet built.
+# SOURCED (2026-09-25), still a manually-updated seed — see module
+# docstring. Rates picked from the middle of ranges reported across
+# multiple current Pakistani rate-guide sites: cement ~1,350-1,550/bag,
+# steel (sariya) ~228-265/kg, bricks ~14,000-22,000 per 1,000
+# (=14-22/brick), sand ~45-120/cft, crush aggregate ~90-150/cft,
+# emulsion paint from ~850/litre, ceramic tiles ~150-300/sqft for
+# everyday quality. Tile adhesive has no found source — still a guess.
 MATERIAL_UNIT: dict[str, str] = {
     "cement_bags": "per 50kg bag",
     "steel_kg": "per kg",
@@ -110,40 +131,53 @@ MATERIAL_LABEL: dict[str, str] = {
 }
 
 MATERIAL_RATE_PKR: dict[str, float] = {
-    "cement_bags": 1450,
-    "steel_kg": 285,
-    "aggregate_cft": 145,
+    "cement_bags": 1420,
+    "steel_kg": 245,
+    "aggregate_cft": 120,
     "bricks": 18,
-    "sand_cft": 110,
-    "paint_litres": 950,
+    "sand_cft": 85,
+    "paint_litres": 900,
     "tiles_sqft": 180,
-    "tile_adhesive_bags": 850,
+    "tile_adhesive_bags": 850,  # unsourced — no rate found for this specifically
 }
 
-# PLACEHOLDER — small city cost-of-transport multiplier applied on top of
-# the base rates above. Not derived from real observed price differences.
+# PLACEHOLDER — city cost-of-transport multiplier applied on top of the
+# base rates above. The direction is loosely consistent with what rate
+# guides report (Rawalpindi and Islamabad tracking close to each other,
+# both a bit below Lahore) but the specific magnitude here is still a
+# guess, not derived from real observed price differences.
 CITY_RATE_MULTIPLIER: dict[City, float] = {
     City.ISLAMABAD: 1.05,
     City.RAWALPINDI: 1.00,
 }
 
-# PLACEHOLDER — flat PKR/sqft benchmarks for categories not covered by the
-# tracked material rates (electrical, plumbing, woodwork, tiles/finishing).
+# SOURCED (2026-09-25) for ELECTRICAL_PLUMBING and TILES_PAINT_FINISHING —
+# still a guess for WOODWORK_DOORS (no source found). These were the most
+# wrong numbers in this file before this pass: multiple current Pakistani
+# cost guides put standard-quality "finishing" (tiles/paint/fixtures) at
+# roughly 1,200-1,800/sqft and MEP (electrical+plumbing combined) at
+# roughly 300-800/sqft, budgeted as ~8-12% of total cost — the previous
+# values here (320 and 450) were landing at roughly a third of the
+# low end of those published ranges. Cross-checked against a second,
+# independent data point: published 10-Marla "grey structure vs finished
+# house" costs (~5-6M vs ~9-12M PKR) imply combined MEP+finishing of
+# roughly 950-2,220 PKR per sqft of built-up area, which the totals below
+# (450 + ~1,100, before the woodwork guess) fall inside.
 FLAT_BENCHMARK_PER_SQFT: dict[MaterialCategory, dict[QualityGrade, float]] = {
     MaterialCategory.ELECTRICAL_PLUMBING: {
-        QualityGrade.ECONOMY: 220,
-        QualityGrade.STANDARD: 320,
-        QualityGrade.PREMIUM: 480,
-    },
-    MaterialCategory.WOODWORK_DOORS: {
-        QualityGrade.ECONOMY: 180,
-        QualityGrade.STANDARD: 280,
-        QualityGrade.PREMIUM: 450,
-    },
-    MaterialCategory.TILES_PAINT_FINISHING: {
         QualityGrade.ECONOMY: 300,
         QualityGrade.STANDARD: 450,
-        QualityGrade.PREMIUM: 750,
+        QualityGrade.PREMIUM: 700,
+    },
+    MaterialCategory.WOODWORK_DOORS: {
+        QualityGrade.ECONOMY: 250,
+        QualityGrade.STANDARD: 350,
+        QualityGrade.PREMIUM: 550,
+    },
+    MaterialCategory.TILES_PAINT_FINISHING: {
+        QualityGrade.ECONOMY: 700,
+        QualityGrade.STANDARD: 1100,
+        QualityGrade.PREMIUM: 2600,
     },
 }
 

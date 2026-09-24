@@ -27,6 +27,7 @@ class RatesResponse(BaseModel):
     city: City
     rates: list[MaterialRate]
     disclaimer: str = (
-        "Placeholder seed rates and fabricated trend history — not yet backed by the live "
-        "Daily Material Rates admin data."
+        "Today's rate is a sourced estimate (updated 2026-09-25), not a live feed. The "
+        "14-day trend and history shown are still fabricated for demonstration — not yet "
+        "backed by real historical data or the Daily Material Rates admin tool."
     )

@@ -36,8 +36,10 @@ class EstimateResponse(BaseModel):
     total_cost_high_pkr: float
     categories: list[CategoryBreakdown]
     disclaimer: str = (
-        "Preliminary estimate only, not a binding quotation. Bylaw and material "
-        "quantity ratios are placeholder values pending civil engineer review."
+        "Preliminary estimate only, not a binding quotation. Material rates are "
+        "sourced estimates (updated 2026-09-25), not a live feed. Bylaw coverage "
+        "ratios and material quantity ratios are still unverified, pending a "
+        "civil engineer's review."
     )
 
 

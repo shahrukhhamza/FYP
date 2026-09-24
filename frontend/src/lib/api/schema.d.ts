@@ -300,7 +300,7 @@ export interface components {
             categories: components["schemas"]["CategoryBreakdown"][];
             /**
              * Disclaimer
-             * @default Preliminary estimate only, not a binding quotation. Bylaw and material quantity ratios are placeholder values pending civil engineer review.
+             * @default Preliminary estimate only, not a binding quotation. Material rates are sourced estimates (updated 2026-09-25), not a live feed. Bylaw coverage ratios and material quantity ratios are still unverified, pending a civil engineer's review.
              */
             disclaimer: string;
         };
@@ -374,7 +374,7 @@ export interface components {
             rates: components["schemas"]["MaterialRate"][];
             /**
              * Disclaimer
-             * @default Placeholder seed rates and fabricated trend history — not yet backed by the live Daily Material Rates admin data.
+             * @default Today's rate is a sourced estimate (updated 2026-09-25), not a live feed. The 14-day trend and history shown are still fabricated for demonstration — not yet backed by real historical data or the Daily Material Rates admin tool.
              */
             disclaimer: string;
         };
@@ -417,7 +417,7 @@ export interface components {
             total_cost_high_pkr: number;
             /**
              * Disclaimer
-             * @default Preliminary estimate only, not a binding quotation. Material quantity ratios, labour benchmarks and the door/window wall-area deduction are placeholder values pending verification.
+             * @default Preliminary estimate only, not a binding quotation. Material rates are sourced estimates (updated 2026-09-25); tile adhesive rate, material quantity ratios, labour benchmarks and the door/window wall-area deduction are still unverified.
              */
             disclaimer: string;
         };

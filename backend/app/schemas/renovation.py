@@ -20,9 +20,9 @@ class RenovationResponse(BaseModel):
     total_cost_low_pkr: float
     total_cost_high_pkr: float
     disclaimer: str = (
-        "Preliminary estimate only, not a binding quotation. Material quantity ratios, "
-        "labour benchmarks and the door/window wall-area deduction are placeholder values "
-        "pending verification."
+        "Preliminary estimate only, not a binding quotation. Material rates are sourced "
+        "estimates (updated 2026-09-25); tile adhesive rate, material quantity ratios, "
+        "labour benchmarks and the door/window wall-area deduction are still unverified."
     )
 
 
