@@ -25,6 +25,7 @@ import {
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Sparkline } from "@/components/ui/sparkline";
 import { TrendBadge } from "@/components/rates/trend-badge";
+import { SourcedBadge } from "@/components/breakdown/sourced-badge";
 
 type City = components["schemas"]["City"];
 type RatesResponse = components["schemas"]["RatesResponse"];
@@ -75,12 +76,15 @@ export function RatesTable() {
           </SelectContent>
         </Select>
 
-        {status === "loading" && (
-          <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-            <Loader2 className="size-3.5 animate-spin" />
-            Updating&hellip;
-          </span>
-        )}
+        <div className="flex items-center gap-4">
+          {status === "loading" && (
+            <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+              <Loader2 className="size-3.5 animate-spin" />
+              Updating&hellip;
+            </span>
+          )}
+          {data && <SourcedBadge date={data.rates_sourced_date} />}
+        </div>
       </div>
 
       {status === "error" && (

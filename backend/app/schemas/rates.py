@@ -3,6 +3,7 @@ from typing import Literal
 
 from pydantic import BaseModel
 
+from app.domain.estimation.data import RATES_SOURCED_DATE
 from app.domain.estimation.types import City
 
 TrendDirection = Literal["up", "down", "flat"]
@@ -26,8 +27,10 @@ class MaterialRate(BaseModel):
 class RatesResponse(BaseModel):
     city: City
     rates: list[MaterialRate]
+    rates_sourced_date: date = RATES_SOURCED_DATE
     disclaimer: str = (
-        "Today's rate is a sourced estimate (updated 2026-09-25), not a live feed. The "
-        "14-day trend and history shown are still fabricated for demonstration — not yet "
-        "backed by real historical data or the Daily Material Rates admin tool."
+        f"Today's rate is a sourced estimate (updated {RATES_SOURCED_DATE.isoformat()}), "
+        f"not a live feed. The 14-day trend and history shown are still fabricated for "
+        f"demonstration — not yet backed by real historical data or the Daily Material "
+        f"Rates admin tool."
     )

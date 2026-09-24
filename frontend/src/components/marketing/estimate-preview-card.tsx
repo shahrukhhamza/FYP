@@ -31,7 +31,7 @@ export function EstimatePreviewCard() {
       <CardContent className="space-y-5 py-5">
         <div>
           <p className="text-xs text-muted-foreground">Estimated total cost</p>
-          <p className="text-3xl font-semibold tracking-tight text-foreground">
+          <p className="text-3xl font-semibold tracking-tight tabular-nums text-foreground">
             PKR 107.0L&ndash;125.6L
           </p>
         </div>

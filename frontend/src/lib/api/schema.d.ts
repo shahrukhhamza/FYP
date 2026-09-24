@@ -299,6 +299,12 @@ export interface components {
             /** Categories */
             categories: components["schemas"]["CategoryBreakdown"][];
             /**
+             * Rates Sourced Date
+             * Format: date
+             * @default 2026-09-25
+             */
+            rates_sourced_date: string;
+            /**
              * Disclaimer
              * @default Preliminary estimate only, not a binding quotation. Material rates are sourced estimates (updated 2026-09-25), not a live feed. Bylaw coverage ratios and material quantity ratios are still unverified, pending a civil engineer's review.
              */
@@ -373,6 +379,12 @@ export interface components {
             /** Rates */
             rates: components["schemas"]["MaterialRate"][];
             /**
+             * Rates Sourced Date
+             * Format: date
+             * @default 2026-09-25
+             */
+            rates_sourced_date: string;
+            /**
              * Disclaimer
              * @default Today's rate is a sourced estimate (updated 2026-09-25), not a live feed. The 14-day trend and history shown are still fabricated for demonstration — not yet backed by real historical data or the Daily Material Rates admin tool.
              */
@@ -415,6 +427,12 @@ export interface components {
             total_cost_low_pkr: number;
             /** Total Cost High Pkr */
             total_cost_high_pkr: number;
+            /**
+             * Rates Sourced Date
+             * Format: date
+             * @default 2026-09-25
+             */
+            rates_sourced_date: string;
             /**
              * Disclaimer
              * @default Preliminary estimate only, not a binding quotation. Material rates are sourced estimates (updated 2026-09-25); tile adhesive rate, material quantity ratios, labour benchmarks and the door/window wall-area deduction are still unverified.

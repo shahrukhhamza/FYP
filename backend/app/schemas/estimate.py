@@ -1,5 +1,8 @@
+from datetime import date
+
 from pydantic import BaseModel, Field
 
+from app.domain.estimation.data import RATES_SOURCED_DATE
 from app.domain.estimation.types import City, PlotSize, QualityGrade, Storeys
 
 
@@ -35,11 +38,12 @@ class EstimateResponse(BaseModel):
     total_cost_low_pkr: float
     total_cost_high_pkr: float
     categories: list[CategoryBreakdown]
+    rates_sourced_date: date = RATES_SOURCED_DATE
     disclaimer: str = (
-        "Preliminary estimate only, not a binding quotation. Material rates are "
-        "sourced estimates (updated 2026-09-25), not a live feed. Bylaw coverage "
-        "ratios and material quantity ratios are still unverified, pending a "
-        "civil engineer's review."
+        f"Preliminary estimate only, not a binding quotation. Material rates are "
+        f"sourced estimates (updated {RATES_SOURCED_DATE.isoformat()}), not a live "
+        f"feed. Bylaw coverage ratios and material quantity ratios are still "
+        f"unverified, pending a civil engineer's review."
     )
 
 

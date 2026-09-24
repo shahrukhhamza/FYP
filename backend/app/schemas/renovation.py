@@ -1,5 +1,8 @@
+from datetime import date
+
 from pydantic import BaseModel, Field
 
+from app.domain.estimation.data import RATES_SOURCED_DATE
 from app.domain.estimation.types import City, QualityGrade, RenovationWorkItem
 from app.schemas.estimate import CategoryBreakdown
 
@@ -19,10 +22,12 @@ class RenovationResponse(BaseModel):
     items: list[CategoryBreakdown]
     total_cost_low_pkr: float
     total_cost_high_pkr: float
+    rates_sourced_date: date = RATES_SOURCED_DATE
     disclaimer: str = (
-        "Preliminary estimate only, not a binding quotation. Material rates are sourced "
-        "estimates (updated 2026-09-25); tile adhesive rate, material quantity ratios, "
-        "labour benchmarks and the door/window wall-area deduction are still unverified."
+        f"Preliminary estimate only, not a binding quotation. Material rates are sourced "
+        f"estimates (updated {RATES_SOURCED_DATE.isoformat()}); tile adhesive rate, "
+        f"material quantity ratios, labour benchmarks and the door/window wall-area "
+        f"deduction are still unverified."
     )
 
 

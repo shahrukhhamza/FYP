@@ -41,6 +41,8 @@ TODO before this is actually verified:
     actual supplier/contractor — no source was found for these.
 """
 
+from datetime import date
+
 from app.domain.estimation.types import (
     City,
     MaterialCategory,
@@ -48,6 +50,12 @@ from app.domain.estimation.types import (
     QualityGrade,
     RenovationWorkItem,
 )
+
+# Single source of truth for "when were the rates below last checked" —
+# referenced by both the disclaimer text and a structured API field, so
+# updating this one line keeps everything in sync the next time rates are
+# refreshed instead of hunting down hardcoded date strings.
+RATES_SOURCED_DATE = date(2026, 9, 25)
 
 # 1 Marla = 225 sqft, 1 Kanal = 20 Marla. These conversions are standard,
 # not placeholders.

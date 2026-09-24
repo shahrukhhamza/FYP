@@ -16,6 +16,7 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CategoryBars } from "@/components/breakdown/category-bars";
 import { CategoryAccordion } from "@/components/breakdown/category-accordion";
 import { ReportActions } from "@/components/breakdown/report-actions";
+import { SourcedBadge } from "@/components/breakdown/sourced-badge";
 
 type EstimateResponse = components["schemas"]["EstimateResponse"];
 type EstimateRequest = components["schemas"]["EstimateRequest"];
@@ -48,13 +49,16 @@ export function EstimateResult({
           <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <p className="text-xs text-muted-foreground">Estimated total cost</p>
-              <p className="text-3xl font-semibold tracking-tight text-foreground">
+              <p className="text-3xl font-semibold tracking-tight tabular-nums text-foreground">
                 {formatPkr(result.total_cost_low_pkr)}&ndash;{formatPkr(result.total_cost_high_pkr)}
               </p>
+              <div className="mt-1.5">
+                <SourcedBadge date={result.rates_sourced_date} />
+              </div>
             </div>
             <div>
               <p className="text-xs text-muted-foreground">Built-up area</p>
-              <p className="text-3xl font-semibold tracking-tight text-foreground">
+              <p className="text-3xl font-semibold tracking-tight tabular-nums text-foreground">
                 {result.built_up_area_sqft.toLocaleString()}{" "}
                 <span className="text-lg font-medium text-muted-foreground">sqft</span>
               </p>
