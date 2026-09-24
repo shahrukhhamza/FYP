@@ -6,6 +6,7 @@ Next.js (App Router, TypeScript) + Tailwind CSS v4 + shadcn/ui. This is a thin c
 
 ```bash
 npm install
+cp .env.example .env.local
 ```
 
 ## Run
@@ -14,7 +15,17 @@ npm install
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000). The backend (`../backend`) needs to be running on port 8000 for any page that calls the API (e.g. `/estimate`).
+
+## API types
+
+`src/lib/api/schema.d.ts` is generated from the backend's live OpenAPI schema, not hand-written. After changing any backend endpoint/schema, regenerate it with the backend running:
+
+```bash
+npm run types:api
+```
+
+`src/lib/api/client.ts` (an `openapi-fetch` client) and every API call are fully typed against that file — if the backend contract changes, TypeScript will flag every call site that's now wrong.
 
 ## Structure
 

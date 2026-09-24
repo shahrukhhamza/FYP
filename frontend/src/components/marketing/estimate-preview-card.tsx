@@ -2,12 +2,16 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
+// Mirrors real output from POST /api/v1/estimate for this exact scenario
+// (10 Marla, Rawalpindi, 2 storeys, standard grade) so this illustration
+// doesn't visually disagree with the real /estimate page. Kept static
+// (not live-fetched) so the landing page stays resilient if the API is down.
 const BREAKDOWN = [
-  { label: "Structure & steel", value: 34, color: "var(--chart-1)" },
-  { label: "Cement & masonry", value: 22, color: "var(--chart-2)" },
-  { label: "Electrical & plumbing", value: 15, color: "var(--chart-3)" },
-  { label: "Woodwork & doors", value: 12, color: "var(--chart-4)" },
-  { label: "Tiles, paint & finishing", value: 17, color: "var(--chart-6)" },
+  { label: "Structure & steel", value: 52.9, color: "var(--chart-1)" },
+  { label: "Cement & masonry", value: 10.2, color: "var(--chart-2)" },
+  { label: "Electrical & plumbing", value: 10.5, color: "var(--chart-3)" },
+  { label: "Woodwork & doors", value: 9.2, color: "var(--chart-4)" },
+  { label: "Tiles, paint & finishing", value: 17.3, color: "var(--chart-6)" },
 ];
 
 export function EstimatePreviewCard() {
@@ -21,14 +25,14 @@ export function EstimatePreviewCard() {
           </Badge>
         </div>
         <p className="text-sm font-semibold text-foreground">
-          10 Marla &middot; Double Storey &middot; Rawalpindi &middot; B-Grade
+          10 Marla &middot; 2 Storeys &middot; Rawalpindi &middot; Standard
         </p>
       </CardHeader>
       <CardContent className="space-y-5 py-5">
         <div>
           <p className="text-xs text-muted-foreground">Estimated total cost</p>
           <p className="text-3xl font-semibold tracking-tight text-foreground">
-            PKR 42.8L&ndash;48.2L
+            PKR 88.2L&ndash;103.6L
           </p>
         </div>
 
