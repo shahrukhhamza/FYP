@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function EstimateResultSkeleton() {
+export function ResultSkeleton() {
   return (
     <Card>
       <CardHeader className="gap-2 border-b border-border/60 !pb-4">

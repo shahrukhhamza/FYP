@@ -24,6 +24,13 @@ export const QUALITY_GRADE_LABELS: Record<components["schemas"]["QualityGrade"],
   premium: "Premium",
 };
 
+export const WORK_ITEM_LABELS: Record<components["schemas"]["RenovationWorkItem"], string> = {
+  floor_tiling: "Floor tiling",
+  wall_tiling: "Wall tiling",
+  painting: "Painting",
+  plastering: "Plastering",
+};
+
 export const STOREYS_LABELS: Record<string, string> = {
   "1": "1 Storey",
   "1.5": "1.5 Storeys (Ground + mumty)",
@@ -40,11 +47,15 @@ export const CATEGORY_COLORS: Record<string, string> = {
   electrical_plumbing: "var(--chart-3)",
   woodwork_doors: "var(--chart-4)",
   tiles_paint_finishing: "var(--chart-6)",
+  floor_tiling: "var(--chart-1)",
+  wall_tiling: "var(--chart-3)",
+  painting: "var(--chart-6)",
+  plastering: "var(--chart-2)",
 };
 
 export function formatPkr(amount: number): string {
   if (amount >= 100_000) {
     return `PKR ${(amount / 100_000).toFixed(1)}L`;
   }
-  return `PKR ${amount.toLocaleString("en-PK")}`;
+  return `PKR ${amount.toLocaleString("en-PK", { maximumFractionDigits: 0 })}`;
 }

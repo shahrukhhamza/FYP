@@ -72,6 +72,40 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/renovation": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Renovation Estimate */
+        post: operations["create_renovation_estimate_api_v1_renovation_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/v1/renovation/options": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** Get Renovation Options */
+        get: operations["get_renovation_options_api_v1_renovation_options_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/": {
         parameters: {
             query?: never;
@@ -218,6 +252,54 @@ export interface components {
              */
             disclaimer: string;
         };
+        /** RenovationOptions */
+        RenovationOptions: {
+            /** Work Items */
+            work_items: components["schemas"]["RenovationWorkItem"][];
+            /** Cities */
+            cities: components["schemas"]["City"][];
+            /** Quality Grades */
+            quality_grades: components["schemas"]["QualityGrade"][];
+        };
+        /** RenovationRequest */
+        RenovationRequest: {
+            /** Length Ft */
+            length_ft: number;
+            /** Width Ft */
+            width_ft: number;
+            /**
+             * Height Ft
+             * @default 9
+             */
+            height_ft: number;
+            /** Work Items */
+            work_items: components["schemas"]["RenovationWorkItem"][];
+            city: components["schemas"]["City"];
+            quality_grade: components["schemas"]["QualityGrade"];
+        };
+        /** RenovationResponse */
+        RenovationResponse: {
+            /** Floor Area Sqft */
+            floor_area_sqft: number;
+            /** Wall Area Sqft */
+            wall_area_sqft: number;
+            /** Items */
+            items: components["schemas"]["CategoryBreakdown"][];
+            /** Total Cost Low Pkr */
+            total_cost_low_pkr: number;
+            /** Total Cost High Pkr */
+            total_cost_high_pkr: number;
+            /**
+             * Disclaimer
+             * @default Preliminary estimate only, not a binding quotation. Material quantity ratios, labour benchmarks and the door/window wall-area deduction are placeholder values pending verification.
+             */
+            disclaimer: string;
+        };
+        /**
+         * RenovationWorkItem
+         * @enum {string}
+         */
+        RenovationWorkItem: "floor_tiling" | "wall_tiling" | "painting" | "plastering";
         /**
          * Storeys
          * @enum {number}
@@ -347,6 +429,59 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    create_renovation_estimate_api_v1_renovation_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RenovationRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RenovationResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
+                };
+            };
+        };
+    };
+    get_renovation_options_api_v1_renovation_options_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RenovationOptions"];
                 };
             };
         };

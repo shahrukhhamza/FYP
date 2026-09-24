@@ -23,8 +23,8 @@ import {
 } from "@/components/ui/select";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { EstimateResult } from "@/components/estimate/estimate-result";
-import { EstimateResultSkeleton } from "@/components/estimate/estimate-result-skeleton";
-import { EstimateEmptyState } from "@/components/estimate/estimate-empty-state";
+import { ResultSkeleton } from "@/components/breakdown/result-skeleton";
+import { ResultEmptyState } from "@/components/breakdown/empty-state";
 
 type PlotSize = components["schemas"]["PlotSize"];
 type City = components["schemas"]["City"];
@@ -173,10 +173,10 @@ export function EstimateForm() {
           </Alert>
         )}
 
-        {status === "idle" && <EstimateEmptyState />}
-        {status === "loading" && <EstimateResultSkeleton />}
+        {status === "idle" && <ResultEmptyState />}
+        {status === "loading" && <ResultSkeleton />}
         {status === "success" && result && <EstimateResult result={result} />}
-        {status === "error" && <EstimateEmptyState />}
+        {status === "error" && <ResultEmptyState />}
       </div>
     </div>
   );

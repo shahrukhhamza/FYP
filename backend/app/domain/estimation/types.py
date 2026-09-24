@@ -44,3 +44,26 @@ CATEGORY_LABELS: dict[MaterialCategory, str] = {
     MaterialCategory.WOODWORK_DOORS: "Woodwork & doors",
     MaterialCategory.TILES_PAINT_FINISHING: "Tiles, paint & finishing",
 }
+
+
+class RenovationWorkItem(str, Enum):
+    FLOOR_TILING = "floor_tiling"
+    WALL_TILING = "wall_tiling"
+    PAINTING = "painting"
+    PLASTERING = "plastering"
+
+
+WORK_ITEM_LABELS: dict[RenovationWorkItem, str] = {
+    RenovationWorkItem.FLOOR_TILING: "Floor tiling",
+    RenovationWorkItem.WALL_TILING: "Wall tiling",
+    RenovationWorkItem.PAINTING: "Painting",
+    RenovationWorkItem.PLASTERING: "Plastering",
+}
+
+# Which measurement each work item is priced against.
+WORK_ITEM_USES_WALL_AREA: dict[RenovationWorkItem, bool] = {
+    RenovationWorkItem.FLOOR_TILING: False,
+    RenovationWorkItem.WALL_TILING: True,
+    RenovationWorkItem.PAINTING: True,
+    RenovationWorkItem.PLASTERING: True,
+}

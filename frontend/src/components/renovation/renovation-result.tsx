@@ -1,13 +1,7 @@
 import { Info } from "lucide-react";
 
 import type { components } from "@/lib/api/schema";
-import {
-  CITY_LABELS,
-  PLOT_SIZE_LABELS,
-  QUALITY_GRADE_LABELS,
-  STOREYS_LABELS,
-  formatPkr,
-} from "@/lib/labels";
+import { formatPkr } from "@/lib/labels";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -16,9 +10,9 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CategoryBars } from "@/components/breakdown/category-bars";
 import { CategoryAccordion } from "@/components/breakdown/category-accordion";
 
-type EstimateResponse = components["schemas"]["EstimateResponse"];
+type RenovationResponse = components["schemas"]["RenovationResponse"];
 
-export function EstimateResult({ result }: { result: EstimateResponse }) {
+export function RenovationResult({ result }: { result: RenovationResponse }) {
   return (
     <div className="space-y-6">
       <Card className="gap-0 overflow-hidden py-0">
@@ -30,37 +24,28 @@ export function EstimateResult({ result }: { result: EstimateResponse }) {
             </Badge>
           </div>
           <p className="text-sm font-semibold text-foreground">
-            {PLOT_SIZE_LABELS[result.plot_size]} &middot; {STOREYS_LABELS[String(result.storeys)]}{" "}
-            &middot; {CITY_LABELS[result.city]} &middot; {QUALITY_GRADE_LABELS[result.quality_grade]}
+            {result.floor_area_sqft.toLocaleString()} sqft floor &middot;{" "}
+            {result.wall_area_sqft.toLocaleString()} sqft wall
           </p>
         </CardHeader>
 
         <CardContent className="space-y-6 py-5">
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
-              <p className="text-xs text-muted-foreground">Estimated total cost</p>
-              <p className="text-3xl font-semibold tracking-tight text-foreground">
-                {formatPkr(result.total_cost_low_pkr)}&ndash;{formatPkr(result.total_cost_high_pkr)}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs text-muted-foreground">Built-up area</p>
-              <p className="text-3xl font-semibold tracking-tight text-foreground">
-                {result.built_up_area_sqft.toLocaleString()}{" "}
-                <span className="text-lg font-medium text-muted-foreground">sqft</span>
-              </p>
-            </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Estimated total cost</p>
+            <p className="text-3xl font-semibold tracking-tight text-foreground">
+              {formatPkr(result.total_cost_low_pkr)}&ndash;{formatPkr(result.total_cost_high_pkr)}
+            </p>
           </div>
 
           <Separator />
 
-          <CategoryBars categories={result.categories} />
+          <CategoryBars categories={result.items} />
         </CardContent>
       </Card>
 
       <Card className="py-0">
         <CardContent className="px-4 py-2">
-          <CategoryAccordion categories={result.categories} />
+          <CategoryAccordion categories={result.items} />
         </CardContent>
       </Card>
 

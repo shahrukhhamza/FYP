@@ -25,7 +25,13 @@ TODO before this stops being a placeholder:
     quantity x rate calculation.
 """
 
-from app.domain.estimation.types import City, MaterialCategory, PlotSize, QualityGrade
+from app.domain.estimation.types import (
+    City,
+    MaterialCategory,
+    PlotSize,
+    QualityGrade,
+    RenovationWorkItem,
+)
 
 # 1 Marla = 225 sqft, 1 Kanal = 20 Marla. These conversions are standard,
 # not placeholders.
@@ -88,6 +94,8 @@ MATERIAL_UNIT: dict[str, str] = {
     "bricks": "per brick",
     "sand_cft": "per cft",
     "paint_litres": "per litre",
+    "tiles_sqft": "per sqft",
+    "tile_adhesive_bags": "per 20kg bag",
 }
 
 MATERIAL_LABEL: dict[str, str] = {
@@ -97,6 +105,8 @@ MATERIAL_LABEL: dict[str, str] = {
     "bricks": "Bricks",
     "sand_cft": "Sand",
     "paint_litres": "Paint",
+    "tiles_sqft": "Tiles",
+    "tile_adhesive_bags": "Tile adhesive",
 }
 
 MATERIAL_RATE_PKR: dict[str, float] = {
@@ -106,6 +116,8 @@ MATERIAL_RATE_PKR: dict[str, float] = {
     "bricks": 18,
     "sand_cft": 110,
     "paint_litres": 950,
+    "tiles_sqft": 180,
+    "tile_adhesive_bags": 850,
 }
 
 # PLACEHOLDER — small city cost-of-transport multiplier applied on top of
@@ -146,3 +158,49 @@ ESTIMATE_RANGE_FRACTION = 0.08
 # real stored history once the admin entry tool exists.
 RATE_HISTORY_DAYS = 14
 RATE_HISTORY_MAX_DAILY_STEP = 0.012  # +/- 1.2% per day, deterministic per material/city
+
+# --- Renovation Estimator ---------------------------------------------------
+# PLACEHOLDER — same status as everything else in this file: reasonable
+# order-of-magnitude ratios, not verified against a quantity surveyor.
+
+# Fraction of gross wall area assumed taken up by doors/windows and therefore
+# not tiled/painted/plastered. A single flat figure, not measured per room.
+WALL_OPENING_DEDUCTION_FRACTION = 0.15
+
+# Material quantity per sqft of the relevant area (floor area for tiling,
+# wall area for wall tiling/painting/plastering), at "standard" grade —
+# reuses QUALITY_GRADE_QUANTITY_MULTIPLIER for economy/premium scaling, and
+# reuses MATERIAL_RATE_PKR above for pricing, so "cement" costs the same
+# whether it's going into a full house estimate or a plastering job.
+RENOVATION_MATERIAL_QTY_PER_SQFT: dict[RenovationWorkItem, dict[str, float]] = {
+    RenovationWorkItem.FLOOR_TILING: {"tiles_sqft": 1.05, "tile_adhesive_bags": 0.025},
+    RenovationWorkItem.WALL_TILING: {"tiles_sqft": 1.05, "tile_adhesive_bags": 0.025},
+    RenovationWorkItem.PAINTING: {"paint_litres": 0.12},
+    RenovationWorkItem.PLASTERING: {"cement_bags": 0.09, "sand_cft": 0.12},
+}
+
+# PLACEHOLDER — flat labour PKR/sqft by work item and quality grade. Labour
+# isn't a "material" with a rate/unit, so it isn't in MATERIAL_RATE_PKR —
+# same flat-benchmark pattern as FLAT_BENCHMARK_PER_SQFT above.
+RENOVATION_LABOUR_PER_SQFT: dict[RenovationWorkItem, dict[QualityGrade, float]] = {
+    RenovationWorkItem.FLOOR_TILING: {
+        QualityGrade.ECONOMY: 80,
+        QualityGrade.STANDARD: 120,
+        QualityGrade.PREMIUM: 180,
+    },
+    RenovationWorkItem.WALL_TILING: {
+        QualityGrade.ECONOMY: 90,
+        QualityGrade.STANDARD: 130,
+        QualityGrade.PREMIUM: 190,
+    },
+    RenovationWorkItem.PAINTING: {
+        QualityGrade.ECONOMY: 40,
+        QualityGrade.STANDARD: 60,
+        QualityGrade.PREMIUM: 90,
+    },
+    RenovationWorkItem.PLASTERING: {
+        QualityGrade.ECONOMY: 50,
+        QualityGrade.STANDARD: 75,
+        QualityGrade.PREMIUM: 110,
+    },
+}
