@@ -103,6 +103,18 @@ MATERIAL_CATEGORY: dict[str, MaterialCategory] = {
     "paint_litres": MaterialCategory.TILES_PAINT_FINISHING,
 }
 
+# Which area a material's quantity scales with, when the engine has both a
+# floor area and a wall area to choose from (the room-by-room estimator —
+# the plot-size estimator only ever has one area, so this map has no effect
+# there). Masonry and paint scale with wall surface; structural materials
+# (cement/steel/aggregate, standing in for RCC slab/footing/columns) scale
+# with floor footprint. Not in this dict defaults to floor-area.
+MATERIAL_USES_WALL_AREA: dict[str, bool] = {
+    "bricks": True,
+    "sand_cft": True,
+    "paint_litres": True,
+}
+
 QUALITY_GRADE_QUANTITY_MULTIPLIER: dict[QualityGrade, float] = {
     QualityGrade.ECONOMY: 0.85,
     QualityGrade.STANDARD: 1.00,

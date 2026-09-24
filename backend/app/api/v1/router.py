@@ -7,6 +7,7 @@ from app.api.v1.endpoints import (
     rates,
     renovation,
     reports,
+    room_estimate,
     saved_estimates,
     site_diary,
 )
@@ -14,6 +15,7 @@ from app.api.v1.endpoints import (
 api_router = APIRouter()
 api_router.include_router(health.router)
 api_router.include_router(estimate.router)
+api_router.include_router(room_estimate.router)
 api_router.include_router(rates.router)
 api_router.include_router(renovation.router)
 api_router.include_router(auth.router)

@@ -36,7 +36,19 @@ def material_rate_for_city(material: str, city: City) -> float:
     return base_rate * data.CITY_RATE_MULTIPLIER[city]
 
 
-def _priced_categories(area_sqft: float, city: City, grade: QualityGrade) -> dict[MaterialCategory, CategoryBreakdown]:
+def priced_categories(
+    floor_area_sqft: float,
+    wall_area_sqft: float,
+    city: City,
+    grade: QualityGrade,
+) -> dict[MaterialCategory, CategoryBreakdown]:
+    """
+    floor_area_sqft and wall_area_sqft are the same number for the
+    plot-size estimator (it only ever has one area to work with), and
+    genuinely different for the room-by-room estimator, which computes
+    each from actual room geometry — see MATERIAL_USES_WALL_AREA in
+    data.py for which materials scale with which.
+    """
     grade_multiplier = data.QUALITY_GRADE_QUANTITY_MULTIPLIER[grade]
     categories: dict[MaterialCategory, CategoryBreakdown] = {
         category: CategoryBreakdown(category=category.value, label=label, cost_pkr=0, percentage=0)
@@ -45,7 +57,8 @@ def _priced_categories(area_sqft: float, city: City, grade: QualityGrade) -> dic
 
     for material, base_qty_per_sqft in data.MATERIAL_QTY_PER_SQFT.items():
         category = data.MATERIAL_CATEGORY[material]
-        quantity = base_qty_per_sqft * grade_multiplier * area_sqft
+        area = wall_area_sqft if data.MATERIAL_USES_WALL_AREA.get(material, False) else floor_area_sqft
+        quantity = base_qty_per_sqft * grade_multiplier * area
         rate = material_rate_for_city(material, city)
         cost = quantity * rate
 
@@ -61,7 +74,7 @@ def _priced_categories(area_sqft: float, city: City, grade: QualityGrade) -> dic
         bucket.cost_pkr += cost
 
     for category, grade_benchmarks in data.FLAT_BENCHMARK_PER_SQFT.items():
-        cost = grade_benchmarks[grade] * area_sqft
+        cost = grade_benchmarks[grade] * floor_area_sqft
         categories[category].cost_pkr += cost
 
     return categories
@@ -69,7 +82,7 @@ def _priced_categories(area_sqft: float, city: City, grade: QualityGrade) -> dic
 
 def compute_estimate(request: EstimateRequest) -> EstimateResponse:
     area = built_up_area_sqft(request.plot_size, request.storeys)
-    categories = _priced_categories(area, request.city, request.quality_grade)
+    categories = priced_categories(area, area, request.city, request.quality_grade)
 
     total = sum(c.cost_pkr for c in categories.values())
     for category in categories.values():

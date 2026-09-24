@@ -55,6 +55,23 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/v1/room-estimate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** Create Room Estimate */
+        post: operations["create_room_estimate_api_v1_room_estimate_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/v1/rates": {
         parameters: {
             query?: never;
@@ -517,6 +534,62 @@ export interface components {
                 [key: string]: unknown;
             };
         };
+        /** RoomEstimateRequest */
+        RoomEstimateRequest: {
+            /** Rooms */
+            rooms: components["schemas"]["RoomGroup"][];
+            /**
+             * Height Ft
+             * @default 9
+             */
+            height_ft: number;
+            storeys: components["schemas"]["Storeys"];
+            city: components["schemas"]["City"];
+            quality_grade: components["schemas"]["QualityGrade"];
+        };
+        /** RoomEstimateResponse */
+        RoomEstimateResponse: {
+            /** Total Floor Area Sqft */
+            total_floor_area_sqft: number;
+            /** Total Wall Area Sqft */
+            total_wall_area_sqft: number;
+            /** Categories */
+            categories: components["schemas"]["CategoryBreakdown"][];
+            /** Total Cost Low Pkr */
+            total_cost_low_pkr: number;
+            /** Total Cost High Pkr */
+            total_cost_high_pkr: number;
+            /**
+             * Rates Sourced Date
+             * Format: date
+             * @default 2026-09-25
+             */
+            rates_sourced_date: string;
+            /**
+             * Disclaimer
+             * @default Preliminary estimate only, not a binding quotation. Material rates are sourced estimates (updated 2026-09-25). Floor and wall areas are computed directly from the room dimensions you entered (exact geometry, not a plot-size approximation), but the material-quantity-per-sqft ratios applied to them, the door/window wall-area deduction, and the RCC structural quantities are still standard rule-of-thumb figures, not a structural engineer's calculation.
+             */
+            disclaimer: string;
+        };
+        /**
+         * RoomGroup
+         * @description One or more identical rooms — "4 bedrooms, 6ft x 7ft each" is
+         *     count=4, length_ft=6, width_ft=7. Add multiple groups to describe a
+         *     whole house (bedrooms + kitchen + lounge + ...).
+         */
+        RoomGroup: {
+            /** Label */
+            label: string;
+            /**
+             * Count
+             * @default 1
+             */
+            count: number;
+            /** Length Ft */
+            length_ft: number;
+            /** Width Ft */
+            width_ft: number;
+        };
         /** SavedEstimateCreate */
         SavedEstimateCreate: {
             estimate_type: components["schemas"]["EstimateType"];
@@ -751,6 +824,39 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["EstimateOptions"];
+                };
+            };
+        };
+    };
+    create_room_estimate_api_v1_room_estimate_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["RoomEstimateRequest"];
+            };
+        };
+        responses: {
+            /** @description Successful Response */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["RoomEstimateResponse"];
+                };
+            };
+            /** @description Validation Error */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HTTPValidationError"];
                 };
             };
         };
