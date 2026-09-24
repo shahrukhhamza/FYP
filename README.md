@@ -14,7 +14,7 @@ Supervisor: Mam Madiha
 
 ## Status
 
-Currently in planning/design phase. No application code yet.
+Frontend (landing page + design system) and backend (FastAPI skeleton) scaffolds are live. Estimation engine and remaining modules are in progress — see `PHASES.md`.
 
 ## Modules (planned)
 
@@ -28,6 +28,10 @@ Currently in planning/design phase. No application code yet.
 
 ## Architecture
 
-- Backend: Python (API-first, so the web frontend and future mobile app are both thin clients of the same API)
-- Frontend: web app (framework TBD)
-- Mobile: Android, planned as the final phase, consuming the same backend API
+- **Backend** (`backend/`): Python + FastAPI. The single source of truth for all business logic (estimation engine, rate database, chatbot). API-first and versioned (`/api/v1/...`) so the web frontend and, later, the Android app are both thin clients of the same API — see `backend/README.md`.
+- **Frontend** (`frontend/`): Next.js + TypeScript + Tailwind + shadcn/ui.
+- **Mobile**: Android, planned as the final phase, consuming the same backend API.
+
+## Getting started
+
+See `backend/README.md` and `frontend/README.md` for setup.
