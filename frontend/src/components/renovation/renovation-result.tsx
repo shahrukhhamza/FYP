@@ -9,10 +9,20 @@ import { Separator } from "@/components/ui/separator";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { CategoryBars } from "@/components/breakdown/category-bars";
 import { CategoryAccordion } from "@/components/breakdown/category-accordion";
+import { ReportActions } from "@/components/breakdown/report-actions";
 
 type RenovationResponse = components["schemas"]["RenovationResponse"];
+type RenovationRequest = components["schemas"]["RenovationRequest"];
 
-export function RenovationResult({ result }: { result: RenovationResponse }) {
+export function RenovationResult({
+  result,
+  request,
+}: {
+  result: RenovationResponse;
+  request: RenovationRequest;
+}) {
+  const defaultLabel = `Renovation · ${result.floor_area_sqft} sqft`;
+
   return (
     <div className="space-y-6">
       <Card className="gap-0 overflow-hidden py-0">
@@ -53,6 +63,13 @@ export function RenovationResult({ result }: { result: RenovationResponse }) {
         <Info />
         <AlertDescription>{result.disclaimer}</AlertDescription>
       </Alert>
+
+      <ReportActions
+        estimateType="renovation"
+        defaultLabel={defaultLabel}
+        requestData={request}
+        responseData={result}
+      />
 
       <Button variant="outline" className="w-full" size="lg" disabled>
         Request Quotes from Verified Dealers

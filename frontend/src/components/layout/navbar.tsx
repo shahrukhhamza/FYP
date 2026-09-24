@@ -4,6 +4,7 @@ import * as React from "react";
 import Link from "next/link";
 import { Building2, Menu } from "lucide-react";
 
+import { useAuth } from "@/lib/auth/auth-context";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import {
@@ -23,6 +24,8 @@ const NAV_LINKS = [
 
 export function Navbar() {
   const [open, setOpen] = React.useState(false);
+  const { status, logout } = useAuth();
+  const isAuthenticated = status === "authenticated";
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-md supports-backdrop-filter:bg-background/60">
@@ -44,9 +47,20 @@ export function Navbar() {
 
         <div className="hidden items-center gap-2 md:flex">
           <ThemeToggle />
-          <Button variant="ghost" size="sm" render={<Link href="/login" />}>
-            Log in
-          </Button>
+          {isAuthenticated ? (
+            <>
+              <Button variant="ghost" size="sm" render={<Link href="/account" />}>
+                My Estimates
+              </Button>
+              <Button variant="ghost" size="sm" onClick={logout}>
+                Log out
+              </Button>
+            </>
+          ) : (
+            <Button variant="ghost" size="sm" render={<Link href="/login" />}>
+              Log in
+            </Button>
+          )}
           <Button size="sm" render={<Link href="/estimate" />}>
             Get Instant Estimate
           </Button>
@@ -84,9 +98,30 @@ export function Navbar() {
                 </Button>
               ))}
               <div className="my-2 border-t border-border" />
-              <Button variant="outline" onClick={() => setOpen(false)} render={<Link href="/login" />}>
-                Log in
-              </Button>
+              {isAuthenticated ? (
+                <>
+                  <Button
+                    variant="outline"
+                    onClick={() => setOpen(false)}
+                    render={<Link href="/account" />}
+                  >
+                    My Estimates
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    onClick={() => {
+                      logout();
+                      setOpen(false);
+                    }}
+                  >
+                    Log out
+                  </Button>
+                </>
+              ) : (
+                <Button variant="outline" onClick={() => setOpen(false)} render={<Link href="/login" />}>
+                  Log in
+                </Button>
+              )}
               <Button onClick={() => setOpen(false)} render={<Link href="/estimate" />}>
                 Get Instant Estimate
               </Button>

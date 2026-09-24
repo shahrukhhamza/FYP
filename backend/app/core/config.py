@@ -17,9 +17,21 @@ class Settings(BaseSettings):
     # Comma-separated list of allowed frontend origins for CORS.
     cors_origins: str = "http://localhost:3000"
 
+    # No default: a hardcoded default would bake in one developer's local
+    # OS username/setup and silently misconfigure everyone else's machine.
+    # Each developer sets their own in .env (see .env.example).
+    database_url: str
+
+    # DEV-ONLY default. Any shared or deployed environment must override
+    # this in its own .env — never commit a real secret here.
+    jwt_secret_key: str = "dev-only-secret-change-me"
+    jwt_algorithm: str = "HS256"
+    access_token_expire_minutes: int = 60 * 24 * 7  # 7 days
+
     @property
     def cors_origins_list(self) -> list[str]:
         return [origin.strip() for origin in self.cors_origins.split(",") if origin.strip()]
 
 
-settings = Settings()
+# Fields are populated from the environment at runtime; mypy can't see that.
+settings = Settings()  # type: ignore[call-arg]

@@ -27,6 +27,7 @@ type City = components["schemas"]["City"];
 type QualityGrade = components["schemas"]["QualityGrade"];
 type WorkItem = components["schemas"]["RenovationWorkItem"];
 type RenovationResponse = components["schemas"]["RenovationResponse"];
+type RenovationRequest = components["schemas"]["RenovationRequest"];
 
 const WORK_ITEMS = Object.keys(WORK_ITEM_LABELS) as WorkItem[];
 const CITIES = Object.keys(CITY_LABELS) as City[];
@@ -44,6 +45,7 @@ export function RenovationForm() {
 
   const [status, setStatus] = React.useState<Status>("idle");
   const [result, setResult] = React.useState<RenovationResponse | null>(null);
+  const [request, setRequest] = React.useState<RenovationRequest | null>(null);
   const [error, setError] = React.useState<string | null>(null);
 
   function toggleWorkItem(item: WorkItem, checked: boolean) {
@@ -62,16 +64,15 @@ export function RenovationForm() {
     setStatus("loading");
     setError(null);
 
-    const { data, error: apiError } = await api.POST("/api/v1/renovation", {
-      body: {
-        length_ft: Number(length),
-        width_ft: Number(width),
-        height_ft: Number(height),
-        work_items: workItems,
-        city,
-        quality_grade: qualityGrade,
-      },
-    });
+    const body: RenovationRequest = {
+      length_ft: Number(length),
+      width_ft: Number(width),
+      height_ft: Number(height),
+      work_items: workItems,
+      city,
+      quality_grade: qualityGrade,
+    };
+    const { data, error: apiError } = await api.POST("/api/v1/renovation", { body });
 
     if (apiError || !data) {
       setStatus("error");
@@ -81,6 +82,7 @@ export function RenovationForm() {
       return;
     }
 
+    setRequest(body);
     setResult(data);
     setStatus("success");
   }
@@ -215,7 +217,9 @@ export function RenovationForm() {
           />
         )}
         {status === "loading" && <ResultSkeleton />}
-        {status === "success" && result && <RenovationResult result={result} />}
+        {status === "success" && result && request && (
+          <RenovationResult result={result} request={request} />
+        )}
         {status === "error" && <ResultEmptyState />}
       </div>
     </div>

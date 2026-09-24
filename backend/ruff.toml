@@ -1,0 +1,7 @@
+[lint]
+ignore = [
+    # FastAPI's dependency-injection system requires `Depends(...)` as an
+    # argument default — that's the framework's API, not a bug. This rule
+    # would otherwise fire on every protected endpoint in the app.
+    "B008",
+]

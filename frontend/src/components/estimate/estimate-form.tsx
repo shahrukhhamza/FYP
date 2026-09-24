@@ -31,6 +31,7 @@ type City = components["schemas"]["City"];
 type QualityGrade = components["schemas"]["QualityGrade"];
 type Storeys = components["schemas"]["Storeys"];
 type EstimateResponse = components["schemas"]["EstimateResponse"];
+type EstimateRequest = components["schemas"]["EstimateRequest"];
 
 const PLOT_SIZES = Object.keys(PLOT_SIZE_LABELS) as PlotSize[];
 const CITIES = Object.keys(CITY_LABELS) as City[];
@@ -47,6 +48,7 @@ export function EstimateForm() {
 
   const [status, setStatus] = React.useState<Status>("idle");
   const [result, setResult] = React.useState<EstimateResponse | null>(null);
+  const [request, setRequest] = React.useState<EstimateRequest | null>(null);
   const [error, setError] = React.useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
@@ -54,9 +56,8 @@ export function EstimateForm() {
     setStatus("loading");
     setError(null);
 
-    const { data, error: apiError } = await api.POST("/api/v1/estimate", {
-      body: { plot_size: plotSize, city, storeys, quality_grade: qualityGrade },
-    });
+    const body: EstimateRequest = { plot_size: plotSize, city, storeys, quality_grade: qualityGrade };
+    const { data, error: apiError } = await api.POST("/api/v1/estimate", { body });
 
     if (apiError || !data) {
       setStatus("error");
@@ -66,6 +67,7 @@ export function EstimateForm() {
       return;
     }
 
+    setRequest(body);
     setResult(data);
     setStatus("success");
   }
@@ -175,7 +177,9 @@ export function EstimateForm() {
 
         {status === "idle" && <ResultEmptyState />}
         {status === "loading" && <ResultSkeleton />}
-        {status === "success" && result && <EstimateResult result={result} />}
+        {status === "success" && result && request && (
+          <EstimateResult result={result} request={request} />
+        )}
         {status === "error" && <ResultEmptyState />}
       </div>
     </div>
