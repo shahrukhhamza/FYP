@@ -8,6 +8,7 @@ from app.api.v1.endpoints import (
     renovation,
     reports,
     saved_estimates,
+    site_diary,
 )
 
 api_router = APIRouter()
@@ -18,6 +19,7 @@ api_router.include_router(renovation.router)
 api_router.include_router(auth.router)
 api_router.include_router(saved_estimates.router)
 api_router.include_router(reports.router)
+api_router.include_router(site_diary.router)
 
 # Future routers plug in here, each behind its own fixed contract so the
 # frontend (and, later, the mobile app) never depends on how a route is

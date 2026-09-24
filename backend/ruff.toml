@@ -1,3 +1,11 @@
+# Alembic regenerates this exact boilerplate style (typing.Union instead of
+# `X | Y`, unsorted imports) for every migration — it's generated code we
+# don't hand-format, not something worth re-fixing after each autogenerate.
+# force-exclude is needed because `ruff check app/ alembic/` passes this
+# path explicitly, which otherwise overrides a plain `exclude`.
+exclude = ["alembic/versions/"]
+force-exclude = true
+
 [lint]
 ignore = [
     # FastAPI's dependency-injection system requires `Depends(...)` as an

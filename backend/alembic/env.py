@@ -10,6 +10,7 @@ from app.core.config import settings
 from app.db.base import Base
 from app.db.models import (  # noqa: F401 — import registers models on Base.metadata
     SavedEstimate,
+    SiteDiaryEntry,
     User,
 )
 

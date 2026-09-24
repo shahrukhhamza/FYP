@@ -44,7 +44,7 @@ const MODULES = [
     icon: ScrollText,
     title: "Site Diary",
     description:
-      "Dated photo updates from your contractor, cross-checked against your budget — built for owners building remotely.",
+      "Log dated photo updates against your project so you can see progress from anywhere — built for owners building remotely.",
   },
   {
     icon: Users,

@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { Download, Home, Loader2, Trash2 } from "lucide-react";
+import Link from "next/link";
+import { Download, Home, Loader2, ScrollText, Trash2 } from "lucide-react";
 
 import { api, API_BASE_URL } from "@/lib/api/client";
 import type { components } from "@/lib/api/schema";
@@ -103,7 +104,9 @@ export function SavedEstimatesList() {
           <CardContent className="flex flex-wrap items-center justify-between gap-3 py-4">
             <div>
               <div className="flex items-center gap-2">
-                <p className="font-medium">{estimate.label}</p>
+                <Link href={`/account/${estimate.id}`} className="font-medium hover:underline">
+                  {estimate.label}
+                </Link>
                 <Badge variant="outline" className="capitalize">
                   {estimate.estimate_type}
                 </Badge>
@@ -117,6 +120,10 @@ export function SavedEstimatesList() {
               </p>
             </div>
             <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm" render={<Link href={`/account/${estimate.id}`} />}>
+                <ScrollText className="size-3.5" />
+                Site Diary
+              </Button>
               <Button
                 variant="outline"
                 size="sm"
