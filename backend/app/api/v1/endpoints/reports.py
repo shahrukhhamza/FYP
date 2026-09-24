@@ -26,7 +26,7 @@ async def download_report(payload: ReportRequest) -> Response:
     pdf_bytes = build_estimate_pdf(
         payload.estimate_type.value, payload.label, payload.request_data, payload.response_data
     )
-    return _pdf_response(pdf_bytes, f"tameer-{payload.estimate_type.value}-estimate.pdf")
+    return _pdf_response(pdf_bytes, f"buniyad-{payload.estimate_type.value}-estimate.pdf")
 
 
 @router.get("/saved-estimates/{estimate_id}/pdf")
@@ -39,4 +39,4 @@ async def download_saved_estimate_report(
     pdf_bytes = build_estimate_pdf(
         estimate.estimate_type.value, estimate.label, estimate.request_data, estimate.response_data
     )
-    return _pdf_response(pdf_bytes, f"tameer-{estimate.label}.pdf")
+    return _pdf_response(pdf_bytes, f"buniyad-{estimate.label}.pdf")

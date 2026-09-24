@@ -34,7 +34,7 @@ export function Navbar() {
           <span className="flex size-8 items-center justify-center rounded-lg bg-primary text-primary-foreground">
             <Building2 className="size-4.5" strokeWidth={2.25} />
           </span>
-          <span className="text-lg font-semibold tracking-tight">TAMEER</span>
+          <span className="text-lg font-semibold tracking-tight">Buniyad</span>
         </Link>
 
         <nav className="hidden items-center gap-1 md:flex">
@@ -82,7 +82,7 @@ export function Navbar() {
                 <span className="flex size-7 items-center justify-center rounded-md bg-primary text-primary-foreground">
                   <Building2 className="size-4" strokeWidth={2.25} />
                 </span>
-                TAMEER
+                Buniyad
               </SheetTitle>
             </SheetHeader>
             <nav className="flex flex-col gap-1 px-4">

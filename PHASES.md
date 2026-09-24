@@ -2,6 +2,8 @@
 
 Execution order for the FYP build. Each phase should be demo-able before moving to the next.
 
+**Renamed TAMEER → Buniyad (2026-09-25).** A live Pakistani company, Tameer.ai, already operates under the near-identical name in this exact space (construction marketplace + cost calculators, apps on both stores) — found via competitor research, not something we could safely ignore or discover later at defense. Every reference across the codebase, docs, and the local Postgres database (`tameer` → `buniyad`) has been renamed and re-verified end-to-end (19/19 checks, zero errors). "Buniyad" (بنیاد, "foundation") was screened for collisions before adopting it; no formal trademark check has been done.
+
 - [x] **Phase 0 — Foundation.** Repo structure, Next.js + FastAPI scaffolds, design tokens, base layout, CI-less local tooling (lint/build) verified.
 - [x] **Phase 1 — Design System & Landing Page.** Reusable UI components (shadcn-based), dark/light theme, and a real landing page matching the product positioning.
 - [x] **Phase 2 — Estimation Engine + API.** Quantity-takeoff logic (`POST /api/v1/estimate`) and material rates (`GET /api/v1/rates`), backed by placeholder-but-isolated data (see `backend/app/domain/estimation/data.py`) pending real bylaw/ratio/rate verification. No persistent DB yet — seed data in code; real storage lands once the Daily Material Rates admin UI (Phase 4) needs it.

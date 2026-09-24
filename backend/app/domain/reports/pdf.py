@@ -64,20 +64,20 @@ def build_estimate_pdf(
         bottomMargin=18 * mm,
         leftMargin=18 * mm,
         rightMargin=18 * mm,
-        title=label or "TAMEER Estimate",
+        title=label or "Buniyad Estimate",
     )
     styles = getSampleStyleSheet()
     title_style = ParagraphStyle(
-        "TameerTitle", parent=styles["Title"], textColor=BRAND_NAVY, fontSize=20, spaceAfter=2
+        "BuniyadTitle", parent=styles["Title"], textColor=BRAND_NAVY, fontSize=20, spaceAfter=2
     )
-    subtitle_style = ParagraphStyle("TameerSubtitle", parent=styles["Normal"], textColor=MUTED, fontSize=10)
+    subtitle_style = ParagraphStyle("BuniyadSubtitle", parent=styles["Normal"], textColor=MUTED, fontSize=10)
     section_style = ParagraphStyle(
-        "TameerSection", parent=styles["Heading2"], textColor=BRAND_NAVY, fontSize=13, spaceBefore=14
+        "BuniyadSection", parent=styles["Heading2"], textColor=BRAND_NAVY, fontSize=13, spaceBefore=14
     )
-    body_style = ParagraphStyle("TameerBody", parent=styles["Normal"], fontSize=9, textColor=MUTED)
+    body_style = ParagraphStyle("BuniyadBody", parent=styles["Normal"], fontSize=9, textColor=MUTED)
 
     elements: list[Any] = []
-    elements.append(Paragraph("TAMEER", title_style))
+    elements.append(Paragraph("Buniyad", title_style))
     elements.append(
         Paragraph(
             "Pakistan&rsquo;s trusted source for fair construction and renovation costs",

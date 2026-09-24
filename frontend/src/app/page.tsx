@@ -36,7 +36,7 @@ const MODULES = [
   },
   {
     icon: MessageCircle,
-    title: "TAMEER Assistant",
+    title: "Buniyad Assistant",
     description:
       "Ask in Urdu or Roman Urdu whether a contractor's quote is fair, right inside the app.",
   },
@@ -92,7 +92,7 @@ export default function Home() {
               Know the fair price before you build, renovate, or buy materials.
             </h1>
             <p className="mt-5 max-w-lg text-base leading-relaxed text-muted-foreground sm:text-lg">
-              TAMEER gives you an itemized construction cost estimate in seconds &mdash; no floor
+              Buniyad gives you an itemized construction cost estimate in seconds &mdash; no floor
               plan needed &mdash; plus daily material rates and a renovation estimator, so you
               always know if you&apos;re being overcharged.
             </p>

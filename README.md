@@ -1,4 +1,4 @@
-# TAMEER
+# Buniyad
 
 Pakistan's trusted source for fair construction and renovation costs — an instant, no-floor-plan-required cost estimator, daily material rates, a renovation estimator, and an in-app AI assistant, backed by an itemized quantity-takeoff engine.
 
@@ -14,7 +14,7 @@ Supervisor: Mam Madiha
 
 ## Status
 
-Frontend (landing page + design system) and backend (FastAPI skeleton) scaffolds are live. Estimation engine and remaining modules are in progress — see `PHASES.md`.
+Phases 0–6 complete: design system, estimation engine, instant estimate, daily rates, renovation estimator, and accounts/auth/saved-estimates/PDF export are all live and verified end-to-end. See `PHASES.md` for the full breakdown and what's next.
 
 ## Modules (planned)
 

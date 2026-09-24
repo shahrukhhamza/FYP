@@ -1,4 +1,4 @@
-# TAMEER Frontend
+# Buniyad Frontend
 
 Next.js (App Router, TypeScript) + Tailwind CSS v4 + shadcn/ui. This is a thin client of the `backend/` FastAPI API — it should not hold business logic; anything computing an estimate, rate, or answer belongs in the backend.
 

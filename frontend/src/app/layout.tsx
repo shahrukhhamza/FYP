@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "TAMEER — Fair Construction & Renovation Costs in Pakistan",
-    template: "%s | TAMEER",
+    default: "Buniyad — Fair Construction & Renovation Costs in Pakistan",
+    template: "%s | Buniyad",
   },
   description:
     "Check today's material rates, get an instant construction cost estimate without a floor plan, and keep your build or renovation on budget — trusted, transparent pricing for Pakistan.",

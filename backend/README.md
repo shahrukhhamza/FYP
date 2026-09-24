@@ -1,10 +1,10 @@
-# TAMEER Backend
+# Buniyad Backend
 
 FastAPI backend — the single source of truth for all business logic (estimation engine, rate database, auth, chatbot tool-calling). The web app and, later, the Android app are both thin clients of this API; no logic should be duplicated in either.
 
 ## Setup
 
-Requires PostgreSQL running locally (`brew install postgresql@16 && brew services start postgresql@16`, then `createdb tameer`).
+Requires PostgreSQL running locally (`brew install postgresql@16 && brew services start postgresql@16`, then `createdb buniyad`).
 
 ```bash
 python3.12 -m venv .venv
