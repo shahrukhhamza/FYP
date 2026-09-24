@@ -23,8 +23,12 @@ class Settings(BaseSettings):
     database_url: str
 
     # DEV-ONLY default. Any shared or deployed environment must override
-    # this in its own .env — never commit a real secret here.
-    jwt_secret_key: str = "dev-only-secret-change-me"
+    # this in its own .env — never commit a real secret here. Padded to
+    # 32+ bytes so PyJWT doesn't emit InsecureKeyLengthWarning on every
+    # token operation during normal local dev (HS256 wants >= 32 bytes
+    # per RFC 7518 Section 3.2); the padding doesn't make it any more
+    # suitable for production — it was never meant to be.
+    jwt_secret_key: str = "dev-only-secret-change-me-0123456789"
     jwt_algorithm: str = "HS256"
     access_token_expire_minutes: int = 60 * 24 * 7  # 7 days
 
